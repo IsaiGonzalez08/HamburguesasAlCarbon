@@ -1,6 +1,8 @@
 package com.example.hamburguesasalcarbon.models;
 
+import com.almasb.fxgl.entity.Entity;
 import com.example.hamburguesasalcarbon.Threads.HiloUsuario;
+import javafx.geometry.Point2D;
 
 import java.util.*;
 
@@ -8,37 +10,37 @@ public class MonitorRecepcionista {
     private boolean restauranteLleno;
     private int mesasOcupadas;
     private final int capacidadMesas;
-    private Queue<HiloUsuario> colaClientes;
-    private Map<HiloUsuario, Integer> asignacionMesas;
+    private Queue<HiloUsuario> colaUsuarios;
+    private Map<HiloUsuario, Integer> asignarMesas;
     private MonitorMesero monitorMesero;
 
     public MonitorRecepcionista(int capacidadMesas) {
         this.restauranteLleno = false;
         this.mesasOcupadas = 0;
         this.capacidadMesas = capacidadMesas;
-        this.colaClientes = new LinkedList<>();
-        this.asignacionMesas = new HashMap<>();
+        this.colaUsuarios = new LinkedList<>();
+        this.asignarMesas = new HashMap<>();
     }
 
     public void setMonitorMesero(MonitorMesero monitorMesero) {
         this.monitorMesero = monitorMesero;
     }
 
-    public synchronized void llegarCliente(HiloUsuario usuario) {
-        System.out.println("El Cliente " + usuario.getId() + " llegó al restaurante.");
+    public synchronized void llegarCliente(HiloUsuario cliente) {
+        System.out.println("Cliente " + cliente.getId() + " llegó al restaurante.");
 
         if (mesasOcupadas == capacidadMesas) {
-            System.out.println("El Restaurante esta lleno. El Cliente " + usuario.getId() + "esta en cola de espera.");
-            colaClientes.add(usuario);
-            while (restauranteLleno || colaClientes.peek() != usuario) {
+            System.out.println("Restaurante lleno. Cliente " + cliente.getId() + " en cola de espera.");
+            colaUsuarios.add(cliente);
+            while (restauranteLleno || colaUsuarios.peek() != cliente) {
                 try {
                     wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            System.out.println("El Cliente " + usuario.getId() + " sale de la cola de espera");
-            colaClientes.remove();
+            System.out.println("Cliente " + cliente.getId() + " sale de la cola de espera");
+            colaUsuarios.remove();
         }
 
         int mesaAsignada;
@@ -46,7 +48,7 @@ public class MonitorRecepcionista {
         for (int i = 1; i <= capacidadMesas; i++) {
             mesasDisponibles.add(i);
         }
-        for (Integer mesaOcupada : asignacionMesas.values()) {
+        for (Integer mesaOcupada : asignarMesas.values()) {
             mesasDisponibles.remove(mesaOcupada);
         }
 
@@ -57,19 +59,19 @@ public class MonitorRecepcionista {
             mesaAsignada = mesasOcupadas;
         }
 
-        asignacionMesas.put(usuario, mesaAsignada);
+        asignarMesas.put(cliente, mesaAsignada);
 
         if (mesasOcupadas == capacidadMesas) {
             restauranteLleno = true;
         }
 
-        System.out.println("El Recepcionista asignó al Cliente " + usuario.getId() + " a la mesa " + mesaAsignada);
+        System.out.println("Recepcionista asignó al Cliente " + cliente.getId() + " a la mesa " + mesaAsignada);
 
         notifyAll();
 
     }
 
-    public synchronized void abandonarRestaurante(HiloUsuario usuario) {
+    public synchronized void abandonarRestaurante(HiloUsuario usuario, Entity usuarios, Entity hamburguesas) {
         mesasOcupadas--;
 
         if (mesasOcupadas < capacidadMesas) {
@@ -77,14 +79,21 @@ public class MonitorRecepcionista {
             notifyAll();
         }
 
-        asignacionMesas.remove(usuario);
+        asignarMesas.remove(usuario);
+        Point2D posicionLiberada = usuario.getPosicionDada();
+        List<Point2D> posiciones = usuario.getPosiciones();
 
-        System.out.println("Cliente " + usuario.getId()+ " abandonó el restaurante.");
-
+        // Realiza cualquier lógica necesaria para liberar la posición, por ejemplo:
+        posiciones.add(posicionLiberada);
+        System.out.println("Cliente " + usuario.getId() + " abandonó el restaurante.");
+        usuarios.setVisible(false);
+        hamburguesas.setVisible(false);
     }
 
-    public synchronized void entregarPizza(HiloUsuario usuario) {
-        System.out.println("Pizza entregada al Cliente " + usuario.getId());
+    public synchronized void entregarPizza(HiloUsuario cliente) {
+        System.out.println("Pizza entregada al Cliente " + cliente.getId());
+
         notify();
+
     }
 }

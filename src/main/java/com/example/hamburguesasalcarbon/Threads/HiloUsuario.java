@@ -1,14 +1,33 @@
 package com.example.hamburguesasalcarbon.Threads;
 
+import com.almasb.fxgl.entity.Entity;
 import com.example.hamburguesasalcarbon.models.MonitorMesero;
+import com.example.hamburguesasalcarbon.models.MonitorRecepcionista;
+import javafx.geometry.Point2D;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HiloUsuario extends Thread {
-    private static int contadorUsuario = 0;
+    private static int contadorUsuarios = 0;
     private MonitorMesero monitorMesero;
+    private MonitorRecepcionista monitorRecepcionista;
 
-    public HiloUsuario(MonitorMesero monitorMesero) {
+    private Entity usuarios;
+    private Entity hamburguesa;
+    private List<Entity> meserosLista;
+
+
+    List<Point2D> posiciones = new ArrayList<>();
+    private Point2D posicionDada;
+
+    List<Point2D> posicionMeseros = new ArrayList<>();
+    Entity meseroAsignado;
+
+
+    public HiloUsuario(MonitorMesero monitorMesero, MonitorRecepcionista monitorRecepcionista, Entity usuarios, int numCliente, List<Entity> meserosLista, List<Point2D> posicionMeseros, Entity hamburguesa) {
         this.monitorMesero = monitorMesero;
-        this.setName("Cliente-" + contadorUsuario++);
+        this.setName("Cliente-" + contadorUsuarios++);
     }
 
 
@@ -40,5 +59,13 @@ public class HiloUsuario extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public Point2D getPosicionDada() {
+        return posicionDada;
+    }
+
+    public List<Point2D> getPosiciones() {
+        return posiciones;
     }
 }
