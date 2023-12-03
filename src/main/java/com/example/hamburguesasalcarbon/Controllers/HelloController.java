@@ -2,7 +2,7 @@ package com.example.hamburguesasalcarbon.Controllers;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.example.hamburguesasalcarbon.Threads.Thread;
+import com.example.hamburguesasalcarbon.Threads.Hilo;
 import com.example.hamburguesasalcarbon.factory.Factory;
 import com.example.hamburguesasalcarbon.models.MonitorMesero;
 import com.example.hamburguesasalcarbon.models.MonitorRecepcionista;
@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 public class HelloController implements Initializable {
         private MonitorMesero monitorMesero;
         private MonitorRecepcionista monitorRecepcionista;
-        private Thread threads;
+        private Hilo threads;
         private static int contadorClientes = 0;
         private static int contadorMeseros = 0;
 
@@ -42,7 +42,7 @@ public class HelloController implements Initializable {
                 FXGL.getGameTimer().runOnceAfter(() -> {
                     Entity usuario = FXGL.spawn("usuario", 1 + (1 * 10), (1 * 3));
                     Entity hamburguesa = FXGL.spawn("hamburguesa", 1 + (1 * 10), (1 * 3));
-                    threads = new Thread(monitorRecepcionista, monitorMesero,usuario, numClient, listameseros, posicionInicialMesero, hamburguesa);
+                    threads = new Hilo(monitorRecepcionista, monitorMesero,usuario, numClient, listameseros, posicionInicialMesero, hamburguesa);
                     System.out.println(usuario + " llegó al restaurante");
                     new Thread(threads).start();
                 }, Duration.seconds(delay + i));

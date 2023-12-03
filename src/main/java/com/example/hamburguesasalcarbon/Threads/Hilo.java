@@ -7,7 +7,7 @@ import javafx.geometry.Point2D;
 
 import java.util.List;
 
-public class Thread implements Runnable{
+public class Hilo implements Runnable{
     private MonitorRecepcionista monitorRecepcionista;
     private MonitorMesero monitorMesero;
     private  Entity usuario;
@@ -18,7 +18,7 @@ public class Thread implements Runnable{
 
     private List<Point2D> posicionesMeseros;
 
-    public Thread(MonitorRecepcionista monitorRecepcionista, MonitorMesero monitorMesero, Entity usuario, int idUser, List<Entity> meseroslista, List<Point2D> posicionInicialMesero, Entity hamburguesa) {
+    public Hilo(MonitorRecepcionista monitorRecepcionista, MonitorMesero monitorMesero, Entity usuario, int idUser, List<Entity> meseroslista, List<Point2D> posicionInicialMesero, Entity hamburguesa) {
         this.monitorMesero = new MonitorMesero(7);
         this.monitorRecepcionista = new MonitorRecepcionista(20);
         this.usuario = usuario;
@@ -36,7 +36,7 @@ public class Thread implements Runnable{
         while (true) {
 
 
-            HiloUsuario cliente = new HiloUsuario(monitorRecepcionista, monitorMesero, usuario, idUser,  meseroslista, posicionesMeseros, hamburguesa);
+            HiloUsuario cliente = new HiloUsuario(monitorMesero, monitorRecepcionista, usuario, idUser,  meseroslista, posicionesMeseros, hamburguesa);
             cliente.start();
 
 

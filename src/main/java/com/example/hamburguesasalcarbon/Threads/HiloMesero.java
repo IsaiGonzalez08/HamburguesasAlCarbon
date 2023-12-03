@@ -4,7 +4,7 @@ import com.example.hamburguesasalcarbon.models.MonitorMesero;
 
 import java.util.Random;
 
-public class HiloMesero extends Thread {
+public class HiloMesero extends Thread{
     private static int contadorMeseros = 0;
     private MonitorMesero monitorMesero;
 
