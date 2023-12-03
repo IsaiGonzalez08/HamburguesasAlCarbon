@@ -15,10 +15,9 @@ public class Factory implements EntityFactory {
         followComponent.setSpeed(1);
         return FXGL.entityBuilder(data)
                 .type(Type.USUARIO)
-                .view("nino.png")
+                .view("cliente.png")
                 .with(followComponent)
                 .buildAndAttach();
-
     }
 
     @Spawns("mesero")
@@ -27,10 +26,9 @@ public class Factory implements EntityFactory {
         followComponent.setSpeed(1);
         return FXGL.entityBuilder(data)
                 .type(Type.MESERO)
-                .view("mesero.png")
+                .view("mesera.png")
                 .with(followComponent)
                 .buildAndAttach();
-
     }
 
     @Spawns("hamburguesa")
@@ -39,9 +37,8 @@ public class Factory implements EntityFactory {
         followComponent.setSpeed(1);
         return FXGL.entityBuilder(data)
                 .type(Type.HAMBURGUESA)
-                .view("pizza.png")
+                .view("hamburguesa.png")
                 .with(followComponent)
                 .buildAndAttach();
-
     }
 }
