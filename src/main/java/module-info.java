@@ -9,5 +9,5 @@ module com.example.hamburguesasalcarbon {
     exports com.example.hamburguesasalcarbon;
     exports com.example.hamburguesasalcarbon.Controllers;
     opens com.example.hamburguesasalcarbon.Controllers to javafx.fxml;
-    exports com.example.hamburguesasalcarbon.factoty;
+    exports com.example.hamburguesasalcarbon.factory;
 }

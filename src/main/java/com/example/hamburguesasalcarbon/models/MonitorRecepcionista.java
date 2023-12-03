@@ -6,6 +6,7 @@ import javafx.geometry.Point2D;
 
 import java.util.*;
 
+
 public class MonitorRecepcionista {
     private boolean restauranteLleno;
     private int mesasOcupadas;
@@ -26,20 +27,20 @@ public class MonitorRecepcionista {
         this.monitorMesero = monitorMesero;
     }
 
-    public synchronized void llegarCliente(HiloUsuario cliente) {
-        System.out.println("Cliente " + cliente.getId() + " llegó al restaurante.");
+    public synchronized void llegarCliente(HiloUsuario usuario) {
+        System.out.println("Cliente " + usuario.getId() + " llegó al restaurante.");
 
         if (mesasOcupadas == capacidadMesas) {
-            System.out.println("Restaurante lleno. Cliente " + cliente.getId() + " en cola de espera.");
-            colaUsuarios.add(cliente);
-            while (restauranteLleno || colaUsuarios.peek() != cliente) {
+            System.out.println("Restaurante lleno. Cliente " + usuario.getId() + " en cola de espera.");
+            colaUsuarios.add(usuario);
+            while (restauranteLleno || colaUsuarios.peek() != usuario) {
                 try {
                     wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            System.out.println("Cliente " + cliente.getId() + " sale de la cola de espera");
+            System.out.println("Cliente " + usuario.getId() + " sale de la cola de espera");
             colaUsuarios.remove();
         }
 
@@ -59,19 +60,19 @@ public class MonitorRecepcionista {
             mesaAsignada = mesasOcupadas;
         }
 
-        asignarMesas.put(cliente, mesaAsignada);
+        asignarMesas.put(usuario, mesaAsignada);
 
         if (mesasOcupadas == capacidadMesas) {
             restauranteLleno = true;
         }
 
-        System.out.println("Recepcionista asignó al Cliente " + cliente.getId() + " a la mesa " + mesaAsignada);
+        System.out.println("Recepcionista asignó al Cliente " + usuario.getId() + " a la mesa " + mesaAsignada);
 
         notifyAll();
 
     }
 
-    public synchronized void abandonarRestaurante(HiloUsuario usuario, Entity usuarios, Entity hamburguesas) {
+    public synchronized void abandonarRestaurante(HiloUsuario cliente, Entity usuario, Entity hamburguesa) {
         mesasOcupadas--;
 
         if (mesasOcupadas < capacidadMesas) {
@@ -79,20 +80,19 @@ public class MonitorRecepcionista {
             notifyAll();
         }
 
-        asignarMesas.remove(usuario);
-        Point2D posicionLiberada = usuario.getPosicionDada();
-        List<Point2D> posiciones = usuario.getPosiciones();
+        asignarMesas.remove(cliente);
+        Point2D posicionLiberada = cliente.getPosicionDada();
+        List<Point2D> posiciones = cliente.getPosiciones();
 
         // Realiza cualquier lógica necesaria para liberar la posición, por ejemplo:
         posiciones.add(posicionLiberada);
-        System.out.println("Cliente " + usuario.getId() + " abandonó el restaurante.");
-        usuarios.setVisible(false);
-        hamburguesas.setVisible(false);
+        System.out.println("Cliente " + cliente.getId() + " abandonó el restaurante.");
+        usuario.setVisible(false);
+        hamburguesa.setVisible(false);
     }
 
-    public synchronized void entregarPizza(HiloUsuario cliente) {
-        System.out.println("Pizza entregada al Cliente " + cliente.getId());
-
+    public synchronized void entregarComida(HiloUsuario cliente) {
+        System.out.println("Comida entregada al Cliente " + cliente.getId());
         notify();
 
     }

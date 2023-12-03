@@ -1,4 +1,4 @@
-package com.example.hamburguesasalcarbon.factoty;
+package com.example.hamburguesasalcarbon.factory;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.FollowComponent;
@@ -6,7 +6,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
-import com.example.hamburguesasalcarbon.factoty.type.Type;
+import com.example.hamburguesasalcarbon.factory.type.Type;
 
 public class Factory implements EntityFactory {
     @Spawns("usuario")

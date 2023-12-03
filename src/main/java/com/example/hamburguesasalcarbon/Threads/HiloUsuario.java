@@ -13,7 +13,7 @@ public class HiloUsuario extends Thread {
     private MonitorMesero monitorMesero;
     private MonitorRecepcionista monitorRecepcionista;
 
-    private Entity usuarios;
+    private Entity usuario;
     private Entity hamburguesa;
     private List<Entity> meserosLista;
 
@@ -25,9 +25,14 @@ public class HiloUsuario extends Thread {
     Entity meseroAsignado;
 
 
-    public HiloUsuario(MonitorMesero monitorMesero, MonitorRecepcionista monitorRecepcionista, Entity usuarios, int numCliente, List<Entity> meserosLista, List<Point2D> posicionMeseros, Entity hamburguesa) {
+    public HiloUsuario(MonitorMesero monitorMesero, MonitorRecepcionista monitorRecepcionista, Entity usuario, int idUser, List<Entity> meserosLista, List<Point2D> posicionMeseros, Entity hamburguesa) {
         this.monitorMesero = monitorMesero;
-        this.setName("Cliente-" + contadorUsuarios++);
+        this.monitorRecepcionista = monitorRecepcionista;
+        this.usuario = usuario;
+        this.hamburguesa= hamburguesa;
+        this.meserosLista = meserosLista;
+        this.posicionMeseros = posicionMeseros;
+        this.setName("Cliente-" + idUser);
     }
 
 

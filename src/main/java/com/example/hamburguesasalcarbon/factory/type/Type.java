@@ -1,4 +1,4 @@
-package com.example.hamburguesasalcarbon.factoty.type;
+package com.example.hamburguesasalcarbon.factory.type;
 
 public enum Type {
 
